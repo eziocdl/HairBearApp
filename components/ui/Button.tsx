@@ -13,6 +13,11 @@ interface ButtonProps {
     fullWidth?: boolean;
     type?: 'button' | 'submit' | 'reset';
     icon?: React.ReactNode;
+    className?: string;
+    style?: React.CSSProperties;
+    id?: string;
+    'aria-label'?: string;
+    'data-testid'?: string;
 }
 
 export default function Button({
@@ -25,6 +30,11 @@ export default function Button({
     fullWidth = false,
     type = 'button',
     icon,
+    className = '',
+    style,
+    id,
+    'aria-label': ariaLabel,
+    'data-testid': dataTestId,
 }: ButtonProps) {
     const baseClasses = 'font-semibold rounded-xl transition-all duration-300 inline-flex items-center justify-center gap-2';
 
@@ -49,7 +59,11 @@ export default function Button({
             type={type}
             onClick={onClick}
             disabled={disabled || loading}
-            className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${widthClass} ${disabledClass}`}
+            className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${widthClass} ${disabledClass} ${className}`}
+            style={style}
+            id={id}
+            aria-label={ariaLabel}
+            data-testid={dataTestId}
             whileTap={{ scale: disabled || loading ? 1 : 0.95 }}
         >
             {loading && <Loader2 className="w-5 h-5 animate-spin" />}

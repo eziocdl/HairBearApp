@@ -1,12 +1,16 @@
 # 🧔 HairBearApp - Simulador de Cortes & Barba com IA
 
-![HairBearApp](https://img.shields.io/badge/Next.js-16.0-black?style=for-the-badge&logo=next.js)
+![HairBearApp](https://img.shields.io/badge/Next.js-14.2-black?style=for-the-badge&logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.0-38bdf8?style=for-the-badge&logo=tailwind-css)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38bdf8?style=for-the-badge&logo=tailwind-css)
+![Mobile Ready](https://img.shields.io/badge/Mobile-Capacitor-blue?style=for-the-badge&logo=capacitor)
+![Status](https://img.shields.io/badge/Status-Production_Ready-green?style=for-the-badge)
 
 **Experiência premium de simulação de cortes de cabelo e estilos de barba com IA**
 
 Visualize seu novo visual ANTES de ir ao barbeiro. 100% privado, gratuito e mobile-first.
+
+Agora pronto para **deploy web** e **conversão para app Android** via Capacitor!
 
 ---
 
@@ -72,7 +76,24 @@ Abra [http://localhost:3000](http://localhost:3000) no navegador.
 
 ---
 
+## 📚 Documentação Completa
+
+Este projeto possui documentação detalhada para cada aspecto:
+
+| Documento | Descrição |
+|-----------|-----------|
+| **[CHECKLIST.md](./CHECKLIST.md)** | ✅ Checklist completo de funcionalidades e status |
+| **[DOCUMENTATION.md](./DOCUMENTATION.md)** | 📘 Documentação técnica completa (arquitetura, APIs, componentes) |
+| **[DEPLOY.md](./DEPLOY.md)** | 🚀 Guia de deploy web (Vercel, Netlify, Docker, VPS) |
+| **[MOBILE.md](./MOBILE.md)** | 📱 Guia completo de conversão para Android (Capacitor) |
+| **[ASSETS.md](./ASSETS.md)** | 🎨 Guia de assets (ícones, splash, screenshots) |
+| **[AJUSTES-REALIZADOS.md](./AJUSTES-REALIZADOS.md)** | 📝 Changelog de todos os ajustes implementados |
+| **[NODE-VERSION.md](./NODE-VERSION.md)** | ⚠️ Notas sobre compatibilidade Node.js |
+
+---
+
 ## 📁 Estrutura do Projeto
+
 
 ```
 hairbearapp/
@@ -213,32 +234,49 @@ Response: { resultImages: [...], metadata: {...} }
 - [x] Stage 5 - Results
 - [x] Stage 6 - Reference Flow
 
-### Sprint 3 🔄 (Em Progresso)
+### Sprint 3 ✅ (Concluído - Nov 2025)
+- [x] Correção de erros TypeScript
+- [x] Testes unitários (Vitest + Testing Library)
+- [x] CI/CD Pipeline (GitHub Actions)
+- [x] Error Boundaries
+- [x] Environment variables com validação Zod
+- [x] Build de produção otimizado
+- [x] Documentação de deploy (DEPLOY.md)
+- [x] Preparação para mobile (MOBILE.md)
+
+### Sprint 4 🔄 (Em Progresso)
 - [ ] Integração TensorFlow.js (detecção facial real)
 - [ ] Integração Gemini API
 - [ ] Otimizações de performance
-- [ ] Testes unitários (Vitest)
+- [ ] Testes E2E (Playwright/Cypress)
 
-### Sprint 4 📅 (Planejado)
+### Sprint 5 📅 (Planejado)
 - [ ] Analytics GA4
 - [ ] Share social (WhatsApp, Instagram)
 - [ ] PWA (Service Worker)
-- [ ] Deploy produção
+- [ ] Deploy produção (Vercel/Netlify)
+- [ ] Conversão para Android (Capacitor)
+- [ ] Publicação na Google Play Store
 
 ---
 
 ## 🧪 Testing
 
 ```bash
-# Rodar testes (quando implementado)
+# Rodar testes
 npm run test
 
 # Testes com coverage
 npm run test:coverage
 
-# E2E tests
-npm run test:e2e
+# Testes em watch mode
+npm run test:watch
 ```
+
+**Cobertura Atual**:
+- ✅ Button component (10 testes)
+- ✅ Card component (6 testes)
+- ✅ Zustand store (10 testes)
 
 ---
 
@@ -250,8 +288,11 @@ npm run test:e2e
 # Install Vercel CLI
 npm i -g vercel
 
-# Deploy
+# Deploy preview
 vercel
+
+# Deploy produção
+vercel --prod
 ```
 
 ### Build Manual
@@ -263,6 +304,16 @@ npm run build
 # Rodar produção
 npm start
 ```
+
+**📚 Documentação Completa**: Veja [DEPLOY.md](./DEPLOY.md) para guias detalhados de:
+- Vercel, Netlify, Docker, VPS
+- Variáveis de ambiente
+- Domínio customizado
+- Monitoramento e rollback
+
+**📱 Guia Android**: Veja [MOBILE.md](./MOBILE.md) para conversão em app mobile com Capacitor
+
+
 
 ---
 
