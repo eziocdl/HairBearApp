@@ -10,9 +10,9 @@ describe('Card Component', () => {
     });
 
     it('applies custom className', () => {
-        render(<Card className="custom-card">Content</Card>);
-        const card = screen.getByText('Content').parentElement;
-        expect(card?.className).toContain('custom-card');
+        render(<Card data-testid="card" className="custom-card">Content</Card>);
+        const card = screen.getByTestId('card');
+        expect(card).toHaveClass('custom-card');
     });
 
     it('handles click events when onClick is provided', async () => {
@@ -26,15 +26,15 @@ describe('Card Component', () => {
     });
 
     it('applies hoverable cursor style', () => {
-        render(<Card hoverable>Hoverable</Card>);
-        const card = screen.getByText('Hoverable').parentElement;
-        expect(card?.className).toContain('cursor-pointer');
+        render(<Card data-testid="card" hoverable>Hoverable</Card>);
+        const card = screen.getByTestId('card');
+        expect(card).toHaveClass('cursor-pointer');
     });
 
     it('does not apply cursor-pointer when not hoverable', () => {
-        render(<Card>Not Hoverable</Card>);
-        const card = screen.getByText('Not Hoverable').parentElement;
-        expect(card?.className).not.toContain('cursor-pointer');
+        render(<Card data-testid="card">Not Hoverable</Card>);
+        const card = screen.getByTestId('card');
+        expect(card).not.toHaveClass('cursor-pointer');
     });
 
     it('applies drag event handlers', () => {

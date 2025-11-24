@@ -16,6 +16,8 @@ export const metadata: Metadata = {
   },
 };
 
+import ReactQueryProvider from '@/lib/react-query-provider';
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -24,8 +26,10 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={inter.className}>
-        {children}
-        <Toaster position="top-center" richColors />
+        <ReactQueryProvider>
+          {children}
+          <Toaster position="top-center" richColors />
+        </ReactQueryProvider>
       </body>
     </html>
   );

@@ -1,23 +1,15 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Star, TrendingUp, X, Scissors, User } from 'lucide-react';
+import { Star, TrendingUp, X, Scissors, User, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import { useAppStore } from '@/lib/store';
 import { toast } from 'sonner';
-
-interface Style {
-    id: string;
-    name: string;
-    description: string;
-    badge?: string;
-    rating: number;
-    reviews: string;
-    type: 'haircut' | 'beard';
-}
+import { stylesService, Style } from '@/services/api';
 
 export default function SuggestionsPage() {
     const router = useRouter();
@@ -26,21 +18,17 @@ export default function SuggestionsPage() {
     const [selectedChoice, setSelectedChoice] = useState<'haircut' | 'haircut_beard' | 'beard'>('haircut_beard');
     const { setSelectedStyle, setSelectedChoice: setStoreChoice, setCurrentStage } = useAppStore();
 
-    const haircuts: Style[] = [
-        { id: 'undercut', name: 'Undercut Moderno', description: 'Versátil e atual', badge: 'Popular', rating: 4.8, reviews: '1.2k', type: 'haircut' },
-        { id: 'pompadour', name: 'Pompadour Clássico', description: 'Elegância atemporal', badge: 'Trending', rating: 4.9, reviews: '890', type: 'haircut' },
-        { id: 'fade', name: 'Skin Fade', description: 'Acabamento limpo', rating: 4.7, reviews: '2.1k', type: 'haircut' },
-        { id: 'buzz', name: 'Buzz Cut', description: 'Prático e masculino', rating: 4.6, reviews: '650', type: 'haircut' },
-        { id: 'quiff', name: 'Textured Quiff', description: 'Volume e estilo', badge: 'Novo', rating: 4.8, reviews: '420', type: 'haircut' },
-    ];
+    // Fetch Haircuts
+    const { data: haircuts, isLoading: isLoadingHaircuts } = useQuery({
+        queryKey: ['styles', 'haircut'],
+        queryFn: stylesService.getHaircuts
+    });
 
-    const beards: Style[] = [
-        { id: 'full_beard', name: 'Barba Cheia', description: 'Visual robusto', badge: 'Popular', rating: 4.9, reviews: '1.5k', type: 'beard' },
-        { id: 'goatee', name: 'Cavanhaque', description: 'Estilo definido', rating: 4.7, reviews: '780', type: 'beard' },
-        { id: 'stubble', name: 'Barba Cerrada', description: 'Casual chic', badge: 'Trending', rating: 4.8, reviews: '1.1k', type: 'beard' },
-        { id: 'van_dyke', name: 'Van Dyke', description: 'Sofisticado', rating: 4.6, reviews: '520', type: 'beard' },
-        { id: 'clean_shave', name: 'Rosto Limpo', description: 'Jovial e fresco', rating: 4.5, reviews: '890', type: 'beard' },
-    ];
+    // Fetch Beards
+    const { data: beards, isLoading: isLoadingBeards } = useQuery({
+        queryKey: ['styles', 'beard'],
+        queryFn: stylesService.getBeards
+    });
 
     const handleStyleClick = (styleId: string) => {
         setSelectedStyleId(styleId);
@@ -67,19 +55,10 @@ export default function SuggestionsPage() {
                 {/* Placeholder Image Area */}
                 <div className="w-full aspect-square bg-gradient-to-br from-slate-800 to-slate-900 rounded-lg flex items-center justify-center relative overflow-hidden">
                     <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
-                    {style.type === 'haircut' ? (
+                    {style.category === 'haircut' ? (
                         <Scissors className="w-12 h-12 text-slate-600 group-hover:text-primary transition-colors" />
                     ) : (
                         <User className="w-12 h-12 text-slate-600 group-hover:text-primary transition-colors" />
-                    )}
-
-                    {/* Badge */}
-                    {style.badge && (
-                        <div className="absolute top-2 right-2">
-                            <span className="px-2 py-1 bg-primary/90 backdrop-blur-sm text-white text-[10px] font-bold uppercase tracking-wider rounded-sm">
-                                {style.badge}
-                            </span>
-                        </div>
                     )}
                 </div>
 
@@ -88,7 +67,7 @@ export default function SuggestionsPage() {
                         <h3 className="font-bold text-white text-base">{style.name}</h3>
                         <div className="flex items-center gap-1 bg-black/30 px-1.5 py-0.5 rounded">
                             <Star className="w-3 h-3 fill-accent text-accent" />
-                            <span className="text-xs font-medium text-white">{style.rating}</span>
+                            <span className="text-xs font-medium text-white">4.8</span>
                         </div>
                     </div>
                     <p className="text-xs text-slate-400">{style.description}</p>
@@ -99,6 +78,20 @@ export default function SuggestionsPage() {
                 </Button>
             </div>
         </Card>
+    );
+
+    const LoadingSkeleton = () => (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            {[1, 2, 3, 4, 5].map((i) => (
+                <div key={i} className="bg-white/5 rounded-xl p-4 space-y-4 animate-pulse">
+                    <div className="w-full aspect-square bg-white/10 rounded-lg" />
+                    <div className="space-y-2">
+                        <div className="h-4 bg-white/10 rounded w-3/4" />
+                        <div className="h-3 bg-white/10 rounded w-1/2" />
+                    </div>
+                </div>
+            ))}
+        </div>
     );
 
     return (
@@ -120,22 +113,30 @@ export default function SuggestionsPage() {
                         <h2 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-2">
                             <Scissors className="w-4 h-4" /> Cortes Recomendados
                         </h2>
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                            {haircuts.map((style) => (
-                                <StyleCard key={style.id} style={style} />
-                            ))}
-                        </div>
+                        {isLoadingHaircuts ? (
+                            <LoadingSkeleton />
+                        ) : (
+                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                                {haircuts?.map((style) => (
+                                    <StyleCard key={style.id} style={style} />
+                                ))}
+                            </div>
+                        )}
                     </section>
 
                     <section>
                         <h2 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-2">
                             <User className="w-4 h-4" /> Estilos de Barba
                         </h2>
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                            {beards.map((style) => (
-                                <StyleCard key={style.id} style={style} />
-                            ))}
-                        </div>
+                        {isLoadingBeards ? (
+                            <LoadingSkeleton />
+                        ) : (
+                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                                {beards?.map((style) => (
+                                    <StyleCard key={style.id} style={style} />
+                                ))}
+                            </div>
+                        )}
                     </section>
                 </div>
             </main>
@@ -167,8 +168,8 @@ export default function SuggestionsPage() {
                                     <label
                                         key={option.id}
                                         className={`flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-all ${selectedChoice === option.id
-                                                ? 'bg-primary/10 border-primary'
-                                                : 'bg-white/5 border-transparent hover:bg-white/10'
+                                            ? 'bg-primary/10 border-primary'
+                                            : 'bg-white/5 border-transparent hover:bg-white/10'
                                             }`}
                                     >
                                         <div className="flex items-center gap-3">
