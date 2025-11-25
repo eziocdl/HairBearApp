@@ -3,21 +3,17 @@
 import { motion } from 'framer-motion';
 import { CheckCircle2, ScanFace, Sparkles, BrainCircuit, Loader2 } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/lib/navigation';
+import { useTranslations } from 'next-intl';
 import Card from '@/components/ui/Card';
 import { useAppStore } from '@/lib/store';
 
 export default function AnalysisPage() {
     const router = useRouter();
+    const t = useTranslations('analysisPage');
     const [progress, setProgress] = useState(0);
     const [currentStep, setCurrentStep] = useState(1);
     const { basePhoto, setCurrentStage } = useAppStore();
-
-    const steps = [
-        { id: 1, label: 'Mapeamento Facial', icon: ScanFace, progress: 40 },
-        { id: 2, label: 'Análise de Geometria', icon: BrainCircuit, progress: 70 },
-        { id: 3, label: 'Gerando Sugestões', icon: Sparkles, progress: 100 },
-    ];
 
     useEffect(() => {
         if (!basePhoto) {
@@ -47,6 +43,13 @@ export default function AnalysisPage() {
         else if (progress >= 70 && currentStep === 2) setCurrentStep(3);
     }, [progress, currentStep]);
 
+    const steps = [
+        { id: 1, label: t('faceMapping'), icon: ScanFace, progress: 40 },
+        { id: 2, label: t('geometryAnalysis'), icon: BrainCircuit, progress: 70 },
+        { id: 3, label: t('generatingSuggestions'), icon: Sparkles, progress: 100 },
+    ];
+
+
     return (
         <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-dark">
             <motion.div
@@ -56,10 +59,10 @@ export default function AnalysisPage() {
             >
                 <div className="text-center space-y-2">
                     <h1 className="text-2xl font-bold text-white">
-                        Processando Imagem
+                        {t('title')}
                     </h1>
                     <p className="text-slate-400 text-sm">
-                        Nossa IA está analisando seus traços para encontrar o corte ideal.
+                        {t('description')}
                     </p>
                 </div>
 
@@ -85,7 +88,7 @@ export default function AnalysisPage() {
                     {/* Progress Bar */}
                     <div className="space-y-2">
                         <div className="flex justify-between text-xs font-medium uppercase tracking-wider text-slate-400">
-                            <span>Progresso</span>
+                            <span>{t('progress')}</span>
                             <span>{progress}%</span>
                         </div>
                         <div className="h-1.5 bg-slate-800 rounded-full overflow-hidden">
@@ -112,10 +115,10 @@ export default function AnalysisPage() {
                                         }`}
                                 >
                                     <div className={`w-8 h-8 rounded-full flex items-center justify-center border ${isCompleted
-                                            ? 'bg-primary border-primary text-white'
-                                            : isActive
-                                                ? 'border-primary text-primary'
-                                                : 'border-slate-600 text-slate-600'
+                                        ? 'bg-primary border-primary text-white'
+                                        : isActive
+                                            ? 'border-primary text-primary'
+                                            : 'border-slate-600 text-slate-600'
                                         }`}>
                                         {isCompleted ? (
                                             <CheckCircle2 className="w-4 h-4" />

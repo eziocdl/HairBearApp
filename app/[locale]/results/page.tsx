@@ -3,7 +3,8 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Heart, Share2, Download, RotateCcw, Check } from 'lucide-react';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/lib/navigation';
+import { useTranslations } from 'next-intl';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import { useAppStore } from '@/lib/store';
@@ -11,6 +12,7 @@ import { toast } from 'sonner';
 
 export default function ResultsPage() {
     const router = useRouter();
+    const t = useTranslations('resultsPage');
     const [currentIndex, setCurrentIndex] = useState(0);
     const [liked, setLiked] = useState(false);
     const { selectedStyle, reset } = useAppStore();
@@ -38,11 +40,11 @@ export default function ResultsPage() {
         <div className="min-h-screen flex flex-col bg-dark">
             <header className="p-4 border-b border-white/5 flex justify-between items-center bg-dark/90 backdrop-blur-md sticky top-0 z-20">
                 <div>
-                    <h1 className="text-lg font-bold text-white">Resultado Final</h1>
-                    <p className="text-xs text-slate-400">{selectedStyle || 'Estilo Personalizado'}</p>
+                    <h1 className="text-lg font-bold text-white">{t('title')}</h1>
+                    <p className="text-xs text-slate-400">{selectedStyle || t('customStyle')}</p>
                 </div>
                 <Button variant="ghost" size="sm" onClick={() => router.push('/suggestions')}>
-                    <RotateCcw className="w-4 h-4 mr-2" /> Tentar Outro
+                    <RotateCcw className="w-4 h-4 mr-2" /> {t('tryAnother')}
                 </Button>
             </header>
 
@@ -60,7 +62,7 @@ export default function ResultsPage() {
                         >
                             {/* Placeholder for Generated Image */}
                             <div className="text-center opacity-20">
-                                <span className="text-6xl font-bold text-white">FOTO {currentIndex + 1}</span>
+                                <span className="text-6xl font-bold text-white">{t('photo')} {currentIndex + 1}</span>
                             </div>
                         </motion.div>
                     </AnimatePresence>
@@ -91,11 +93,11 @@ export default function ResultsPage() {
                 <div className="space-y-6">
                     <div className="grid grid-cols-2 gap-4">
                         <div className="bg-white/5 rounded-xl p-3 border border-white/5 flex items-center justify-between">
-                            <span className="text-xs text-slate-400 uppercase tracking-wider">Realismo</span>
+                            <span className="text-xs text-slate-400 uppercase tracking-wider">{t('realism')}</span>
                             <span className="text-sm font-bold text-emerald-400">{currentResult.quality}%</span>
                         </div>
                         <div className="bg-white/5 rounded-xl p-3 border border-white/5 flex items-center justify-between">
-                            <span className="text-xs text-slate-400 uppercase tracking-wider">Fidelidade</span>
+                            <span className="text-xs text-slate-400 uppercase tracking-wider">{t('fidelity')}</span>
                             <span className="text-sm font-bold text-emerald-400">{currentResult.fidelity}%</span>
                         </div>
                     </div>
@@ -107,15 +109,15 @@ export default function ResultsPage() {
                             className="flex flex-col gap-1 h-auto py-3"
                         >
                             <Heart className={`w-5 h-5 ${liked ? 'fill-white' : ''}`} />
-                            <span className="text-[10px]">Salvar</span>
+                            <span className="text-[10px]">{t('save')}</span>
                         </Button>
                         <Button variant="secondary" className="flex flex-col gap-1 h-auto py-3">
                             <Share2 className="w-5 h-5" />
-                            <span className="text-[10px]">Compartilhar</span>
+                            <span className="text-[10px]">{t('share')}</span>
                         </Button>
                         <Button variant="secondary" className="flex flex-col gap-1 h-auto py-3">
                             <Download className="w-5 h-5" />
-                            <span className="text-[10px]">Baixar HD</span>
+                            <span className="text-[10px]">{t('downloadHD')}</span>
                         </Button>
                     </div>
 
@@ -128,7 +130,7 @@ export default function ResultsPage() {
                             router.push('/');
                         }}
                     >
-                        Finalizar Experiência
+                        {t('finishExperience')}
                     </Button>
                 </div>
             </main>

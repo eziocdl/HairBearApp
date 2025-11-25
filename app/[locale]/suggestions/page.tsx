@@ -3,7 +3,8 @@
 import { motion } from 'framer-motion';
 import { Star, TrendingUp, X, Scissors, User, Loader2 } from 'lucide-react';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/lib/navigation';
+import { useTranslations } from 'next-intl';
 import { useQuery } from '@tanstack/react-query';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
@@ -13,6 +14,7 @@ import { stylesService, Style } from '@/services/api';
 
 export default function SuggestionsPage() {
     const router = useRouter();
+    const t = useTranslations('suggestionsPage');
     const [selectedStyleId, setSelectedStyleId] = useState<string | null>(null);
     const [showModal, setShowModal] = useState(false);
     const [selectedChoice, setSelectedChoice] = useState<'haircut' | 'haircut_beard' | 'beard'>('haircut_beard');
@@ -41,7 +43,7 @@ export default function SuggestionsPage() {
         setStoreChoice(selectedChoice);
         setCurrentStage('results');
         setShowModal(false);
-        toast.success('Gerando seu novo visual...');
+        toast.success(t('generating'));
         router.push('/results');
     };
 
@@ -74,7 +76,7 @@ export default function SuggestionsPage() {
                 </div>
 
                 <Button variant="outline" size="sm" fullWidth className="text-xs py-2">
-                    Visualizar
+                    {t('view')}
                 </Button>
             </div>
         </Card>
@@ -99,10 +101,10 @@ export default function SuggestionsPage() {
             <header className="sticky top-0 z-10 p-6 bg-dark/90 backdrop-blur-lg border-b border-white/5">
                 <div className="max-w-6xl mx-auto">
                     <h1 className="text-xl font-bold text-white">
-                        Sugestões para Você
+                        {t('title')}
                     </h1>
                     <p className="text-sm text-slate-400">
-                        Baseado na análise do seu rosto
+                        {t('subtitle')}
                     </p>
                 </div>
             </header>
@@ -111,7 +113,7 @@ export default function SuggestionsPage() {
                 <div className="max-w-6xl mx-auto space-y-10">
                     <section>
                         <h2 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-2">
-                            <Scissors className="w-4 h-4" /> Cortes Recomendados
+                            <Scissors className="w-4 h-4" /> {t('recommendedHaircuts')}
                         </h2>
                         {isLoadingHaircuts ? (
                             <LoadingSkeleton />
@@ -126,7 +128,7 @@ export default function SuggestionsPage() {
 
                     <section>
                         <h2 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-2">
-                            <User className="w-4 h-4" /> Estilos de Barba
+                            <User className="w-4 h-4" /> {t('beardStyles')}
                         </h2>
                         {isLoadingBeards ? (
                             <LoadingSkeleton />
@@ -152,7 +154,7 @@ export default function SuggestionsPage() {
                         <Card className="space-y-6 border-white/10 bg-dark-lighter">
                             <div className="flex items-center justify-between border-b border-white/5 pb-4">
                                 <h3 className="text-lg font-bold text-white">
-                                    Personalizar Visualização
+                                    {t('customizeView')}
                                 </h3>
                                 <button onClick={() => setShowModal(false)} className="text-slate-400 hover:text-white">
                                     <X className="w-5 h-5" />
@@ -161,9 +163,9 @@ export default function SuggestionsPage() {
 
                             <div className="space-y-3">
                                 {[
-                                    { id: 'haircut', label: 'Apenas Corte' },
-                                    { id: 'haircut_beard', label: 'Corte + Barba', recommended: true },
-                                    { id: 'beard', label: 'Apenas Barba' }
+                                    { id: 'haircut', label: t('haircutOnly') },
+                                    { id: 'haircut_beard', label: t('haircutBeard'), recommended: true },
+                                    { id: 'beard', label: t('beardOnly') }
                                 ].map((option) => (
                                     <label
                                         key={option.id}
@@ -186,7 +188,7 @@ export default function SuggestionsPage() {
                                         </div>
                                         {option.recommended && (
                                             <span className="text-[10px] font-bold bg-primary text-white px-2 py-0.5 rounded-full">
-                                                RECOMENDADO
+                                                {t('recommended')}
                                             </span>
                                         )}
                                     </label>
@@ -194,7 +196,7 @@ export default function SuggestionsPage() {
                             </div>
 
                             <Button variant="primary" size="lg" fullWidth onClick={handleConfirm}>
-                                Gerar Resultado
+                                {t('generateResult')}
                             </Button>
                         </Card>
                     </motion.div>

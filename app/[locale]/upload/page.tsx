@@ -3,7 +3,8 @@
 import { motion } from 'framer-motion';
 import { Upload, X, CheckCircle, AlertTriangle, Image as ImageIcon } from 'lucide-react';
 import { useState, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/lib/navigation';
+import { useTranslations } from 'next-intl';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import { useAppStore } from '@/lib/store';
@@ -11,6 +12,7 @@ import { toast } from 'sonner';
 
 export default function UploadPage() {
     const router = useRouter();
+    const t = useTranslations('uploadPage');
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [dragActive, setDragActive] = useState(false);
     const [preview, setPreview] = useState<string | null>(null);
@@ -21,13 +23,13 @@ export default function UploadPage() {
     const validateFile = async (file: File): Promise<boolean> => {
         // Validar tamanho
         if (file.size > 10 * 1024 * 1024) {
-            toast.error('Arquivo muito grande! Máximo 10MB');
+            toast.error(t('errorTooLarge'));
             return false;
         }
 
         // Validar tipo
         if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
-            toast.error('Formato inválido! Use JPEG, PNG ou WebP');
+            toast.error(t('errorInvalidFormat'));
             return false;
         }
 
@@ -36,7 +38,7 @@ export default function UploadPage() {
             const img = new Image();
             img.onload = () => {
                 if (img.width < 360 || img.height < 480) {
-                    toast.error('Imagem muito pequena! Mínimo 360x480px');
+                    toast.error(t('errorTooSmall'));
                     resolve(false);
                 } else {
                     resolve(true);
@@ -64,7 +66,7 @@ export default function UploadPage() {
                     setBasePhoto(blob);
                 });
 
-                toast.success('Foto validada com sucesso!');
+                toast.success(t('successValidated'));
             };
             reader.readAsDataURL(file);
         } else {
@@ -112,7 +114,7 @@ export default function UploadPage() {
         <div className="min-h-screen flex flex-col">
             {/* Header */}
             <header className="p-6 flex items-center justify-between border-b border-white/10">
-                <h1 className="text-xl font-bold text-white">Enviar Foto</h1>
+                <h1 className="text-xl font-bold text-white">{t('title')}</h1>
                 <button
                     onClick={handleCancel}
                     className="p-2 hover:bg-white/10 rounded-lg transition-colors"
@@ -133,8 +135,8 @@ export default function UploadPage() {
                             {/* Drag & Drop Zone */}
                             <Card
                                 className={`relative border-2 border-dashed transition-all duration-300 ${dragActive
-                                        ? 'border-primary bg-primary/10'
-                                        : 'border-slate-600 hover:border-slate-500'
+                                    ? 'border-primary bg-primary/10'
+                                    : 'border-slate-600 hover:border-slate-500'
                                     }`}
                                 onDragEnter={handleDrag}
                                 onDragLeave={handleDrag}
@@ -150,17 +152,17 @@ export default function UploadPage() {
 
                                     <div>
                                         <h3 className="text-xl font-semibold text-white mb-2">
-                                            Arraste sua foto aqui
+                                            {t('dragHere')}
                                         </h3>
                                         <p className="text-slate-400">
-                                            ou clique para selecionar
+                                            {t('orClick')}
                                         </p>
                                     </div>
 
                                     <div className="text-sm text-slate-500 space-y-1">
-                                        <p>✓ JPEG, PNG ou WebP</p>
-                                        <p>✓ Máximo 10MB</p>
-                                        <p>✓ Mínimo 360x480px</p>
+                                        <p>{t('formats')}</p>
+                                        <p>{t('maxSize')}</p>
+                                        <p>{t('minSize')}</p>
                                     </div>
 
                                     <input
@@ -180,7 +182,7 @@ export default function UploadPage() {
                                 icon={<ImageIcon className="w-6 h-6" />}
                                 onClick={() => fileInputRef.current?.click()}
                             >
-                                SELECIONAR FOTO
+                                {t('selectPhoto')}
                             </Button>
                         </>
                     ) : (
@@ -209,8 +211,8 @@ export default function UploadPage() {
                                     <div className="flex items-center gap-3 p-3 bg-primary/10 border border-primary/30 rounded-lg">
                                         <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
                                         <div className="text-sm">
-                                            <p className="font-semibold text-white">Foto validada!</p>
-                                            <p className="text-slate-300">Pronta para análise</p>
+                                            <p className="font-semibold text-white">{t('validated')}</p>
+                                            <p className="text-slate-300">{t('readyAnalysis')}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -223,7 +225,7 @@ export default function UploadPage() {
                                     fullWidth
                                     onClick={handleContinue}
                                 >
-                                    CONTINUAR
+                                    {t('continue')}
                                 </Button>
 
                                 <Button
@@ -235,7 +237,7 @@ export default function UploadPage() {
                                         setValidated(false);
                                     }}
                                 >
-                                    Trocar Foto
+                                    {t('changePhoto')}
                                 </Button>
                             </div>
                         </>
@@ -245,7 +247,7 @@ export default function UploadPage() {
                         <div className="text-center">
                             <div className="inline-flex items-center gap-2 text-primary">
                                 <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-                                <span>Validando imagem...</span>
+                                <span>{t('validating')}</span>
                             </div>
                         </div>
                     )}

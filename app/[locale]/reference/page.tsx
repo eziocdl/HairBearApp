@@ -3,7 +3,8 @@
 import { motion } from 'framer-motion';
 import { Camera, Upload, X, CheckCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/lib/navigation';
+import { useTranslations } from 'next-intl';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import { useAppStore } from '@/lib/store';
@@ -11,6 +12,7 @@ import { toast } from 'sonner';
 
 export default function ReferencePage() {
     const router = useRouter();
+    const t = useTranslations('referencePage');
     const [currentStep, setCurrentStep] = useState(1);
     const [basePreview, setBasePreview] = useState<string | null>(null);
     const [referencePreview, setReferencePreview] = useState<string | null>(null);
@@ -27,7 +29,7 @@ export default function ReferencePage() {
                 const blob = new Blob([buffer], { type: file.type });
                 setBasePhoto(blob);
             });
-            toast.success('Foto base carregada!');
+            toast.success(t('baseLoaded'));
             setCurrentStep(2);
         };
         reader.readAsDataURL(file);
@@ -41,7 +43,7 @@ export default function ReferencePage() {
                 const blob = new Blob([buffer], { type: file.type });
                 setReferencePhoto(blob);
             });
-            toast.success('Foto de referência carregada!');
+            toast.success(t('referenceLoaded'));
             setCurrentStep(3);
         };
         reader.readAsDataURL(file);
@@ -49,12 +51,12 @@ export default function ReferencePage() {
 
     const handleProcess = () => {
         if (!confirmed) {
-            toast.error('Por favor, confirme os uploads');
+            toast.error(t('confirmError'));
             return;
         }
 
         setCurrentStage('results');
-        toast.success('Processando com referência...');
+        toast.success(t('processing'));
         router.push('/results');
     };
 
@@ -76,8 +78,8 @@ export default function ReferencePage() {
                         </button>
                     )}
                     <div>
-                        <h1 className="text-xl font-bold text-white">Usar Referência</h1>
-                        <p className="text-sm text-slate-400">Etapa {currentStep}/3</p>
+                        <h1 className="text-xl font-bold text-white">{t('title')}</h1>
+                        <p className="text-sm text-slate-400">{t('step')} {currentStep}/3</p>
                     </div>
                 </div>
                 <button
@@ -95,10 +97,10 @@ export default function ReferencePage() {
                         <div
                             key={step}
                             className={`h-2 flex-1 rounded-full transition-all ${step === currentStep
-                                    ? 'bg-primary'
-                                    : step < currentStep
-                                        ? 'bg-primary/50'
-                                        : 'bg-slate-700'
+                                ? 'bg-primary'
+                                : step < currentStep
+                                    ? 'bg-primary/50'
+                                    : 'bg-slate-700'
                                 }`}
                         />
                     ))}
@@ -119,10 +121,10 @@ export default function ReferencePage() {
                         <>
                             <div className="text-center space-y-2">
                                 <h2 className="text-2xl font-bold text-white">
-                                    ETAPA 1/3 — FOTO BASE
+                                    {t('basePhotoTitle')}
                                 </h2>
                                 <p className="text-slate-400">
-                                    Tire uma foto sua ou escolha da galeria
+                                    {t('basePhotoDesc')}
                                 </p>
                             </div>
 
@@ -134,7 +136,7 @@ export default function ReferencePage() {
                                     icon={<Camera className="w-6 h-6" />}
                                     onClick={() => router.push('/camera')}
                                 >
-                                    USAR CÂMERA
+                                    {t('useCamera')}
                                 </Button>
 
                                 <Button
@@ -144,7 +146,7 @@ export default function ReferencePage() {
                                     icon={<Upload className="w-6 h-6" />}
                                     onClick={() => fileInputRef.current?.click()}
                                 >
-                                    ESCOLHER DA GALERIA
+                                    {t('chooseGallery')}
                                 </Button>
 
                                 <input
@@ -163,10 +165,10 @@ export default function ReferencePage() {
                         <>
                             <div className="text-center space-y-2">
                                 <h2 className="text-2xl font-bold text-white">
-                                    ETAPA 2/3 — REFERÊNCIA
+                                    {t('referenceTitle')}
                                 </h2>
                                 <p className="text-slate-400">
-                                    Envie imagem de referência (corte ou barba que quer)
+                                    {t('referenceDesc')}
                                 </p>
                             </div>
 
@@ -179,8 +181,8 @@ export default function ReferencePage() {
                                             className="w-16 h-16 rounded-lg object-cover"
                                         />
                                         <div className="flex-1">
-                                            <p className="text-sm font-medium text-white">Sua foto</p>
-                                            <p className="text-xs text-slate-400">Carregada ✓</p>
+                                            <p className="text-sm font-medium text-white">{t('yourPhoto')}</p>
+                                            <p className="text-xs text-slate-400">{t('loaded')}</p>
                                         </div>
                                         <CheckCircle className="w-5 h-5 text-primary" />
                                     </div>
@@ -198,8 +200,8 @@ export default function ReferencePage() {
                                         </div>
                                     </div>
                                     <div>
-                                        <p className="font-semibold text-white">Upload Referência</p>
-                                        <p className="text-sm text-slate-400">Frontal ou lateral OK</p>
+                                        <p className="font-semibold text-white">{t('uploadReference')}</p>
+                                        <p className="text-sm text-slate-400">{t('frontalOk')}</p>
                                     </div>
                                 </div>
                             </Card>
@@ -214,7 +216,7 @@ export default function ReferencePage() {
 
                             <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3">
                                 <p className="text-sm text-blue-300">
-                                    ℹ️ <strong>Dica:</strong> Escolha uma foto clara do corte/barba que deseja
+                                    ℹ️ <strong>{t('tip')}</strong> {t('tipDesc')}
                                 </p>
                             </div>
                         </>
@@ -225,10 +227,10 @@ export default function ReferencePage() {
                         <>
                             <div className="text-center space-y-2">
                                 <h2 className="text-2xl font-bold text-white">
-                                    ETAPA 3/3 — CONFIRMAR
+                                    {t('confirmTitle')}
                                 </h2>
                                 <p className="text-slate-400">
-                                    Suas fotos estão prontas
+                                    {t('confirmDesc')}
                                 </p>
                             </div>
 
@@ -239,18 +241,18 @@ export default function ReferencePage() {
                                         {basePreview && (
                                             <img
                                                 src={basePreview}
-                                                alt="Sua foto"
+                                                alt={t('yourPhotoLabel')}
                                                 className="w-full h-48 object-cover rounded-lg"
                                             />
                                         )}
                                         <div className="text-center">
-                                            <p className="font-semibold text-white">Sua Foto</p>
+                                            <p className="font-semibold text-white">{t('yourPhotoLabel')}</p>
                                             <Button
                                                 variant="ghost"
                                                 size="sm"
                                                 onClick={() => setCurrentStep(1)}
                                             >
-                                                Trocar
+                                                {t('change')}
                                             </Button>
                                         </div>
                                     </div>
@@ -262,18 +264,18 @@ export default function ReferencePage() {
                                         {referencePreview && (
                                             <img
                                                 src={referencePreview}
-                                                alt="Referência"
+                                                alt={t('referenceLabel')}
                                                 className="w-full h-48 object-cover rounded-lg"
                                             />
                                         )}
                                         <div className="text-center">
-                                            <p className="font-semibold text-white">Referência</p>
+                                            <p className="font-semibold text-white">{t('referenceLabel')}</p>
                                             <Button
                                                 variant="ghost"
                                                 size="sm"
                                                 onClick={() => setCurrentStep(2)}
                                             >
-                                                Trocar
+                                                {t('change')}
                                             </Button>
                                         </div>
                                     </div>
@@ -289,7 +291,7 @@ export default function ReferencePage() {
                                         className="w-5 h-5 rounded text-primary"
                                     />
                                     <span className="text-white font-medium">
-                                        Confirmo os uploads e quero processar
+                                        {t('confirmUploads')}
                                     </span>
                                 </label>
                             </Card>
@@ -302,7 +304,7 @@ export default function ReferencePage() {
                                     onClick={handleProcess}
                                     disabled={!confirmed}
                                 >
-                                    PROCESSAR
+                                    {t('process')}
                                 </Button>
 
                                 <Button
@@ -311,7 +313,7 @@ export default function ReferencePage() {
                                     fullWidth
                                     onClick={handleCancel}
                                 >
-                                    Cancelar
+                                    {t('cancel')}
                                 </Button>
                             </div>
                         </>

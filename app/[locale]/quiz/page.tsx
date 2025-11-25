@@ -2,44 +2,48 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/lib/navigation';
+import { useTranslations } from 'next-intl';
 import { ChevronRight, ChevronLeft, Check, User, Scissors, Sparkles } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import { useAppStore } from '@/lib/store';
 
-const questions = [
-    {
-        id: 'stylePreference',
-        title: 'Qual seu estilo preferido?',
-        description: 'O que você busca transmitir com seu novo visual?',
-        options: [
-            {
-                id: 'classic',
-                label: 'Clássico',
-                image: 'https://images.unsplash.com/photo-1621605815971-fbc98d665033?q=80&w=2070&auto=format&fit=crop',
-                description: 'Elegante e atemporal'
-            },
-            {
-                id: 'modern',
-                label: 'Moderno',
-                image: 'https://images.unsplash.com/photo-1599351431202-1e0f0137899a?q=80&w=1976&auto=format&fit=crop',
-                description: 'Despojado e atual'
-            },
-            {
-                id: 'bold',
-                label: 'Ousado',
-                image: 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?q=80&w=2070&auto=format&fit=crop',
-                description: 'Marcante e único'
-            },
-        ],
-    },
-];
+
 
 export default function QuizPage() {
     const router = useRouter();
+    const t = useTranslations('quizPage');
     const { setQuizResults, setCurrentStage } = useAppStore();
     const [step, setStep] = useState(0);
     const [answers, setAnswers] = useState<Record<string, string>>({});
+
+    const questions = [
+        {
+            id: 'stylePreference',
+            title: t('styleQuestion'),
+            description: t('styleDescription'),
+            options: [
+                {
+                    id: 'classic',
+                    label: t('classic'),
+                    image: 'https://images.unsplash.com/photo-1621605815971-fbc98d665033?q=80&w=2070&auto=format&fit=crop',
+                    description: t('classicDesc')
+                },
+                {
+                    id: 'modern',
+                    label: t('modern'),
+                    image: 'https://images.unsplash.com/photo-1599351431202-1e0f0137899a?q=80&w=1976&auto=format&fit=crop',
+                    description: t('modernDesc')
+                },
+                {
+                    id: 'bold',
+                    label: t('bold'),
+                    image: 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?q=80&w=2070&auto=format&fit=crop',
+                    description: t('boldDesc')
+                },
+            ],
+        },
+    ];
 
     const currentQuestion = questions[step];
 
@@ -95,7 +99,7 @@ export default function QuizPage() {
                     >
                         <div className="space-y-2 text-center">
                             <span className="text-primary text-sm font-bold tracking-wider uppercase">
-                                Passo {step + 1} de {questions.length}
+                                {t('step')} {step + 1} {t('of')} {questions.length}
                             </span>
                             <h1 className="text-3xl md:text-4xl font-bold text-white">
                                 {currentQuestion.title}
@@ -159,7 +163,7 @@ export default function QuizPage() {
                         className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
                     >
                         <ChevronLeft className="w-5 h-5" />
-                        Voltar
+                        {t('back')}
                     </button>
 
                     <Button
@@ -168,7 +172,7 @@ export default function QuizPage() {
                         disabled={!answers[currentQuestion.id]}
                         icon={<ChevronRight className="w-5 h-5" />}
                     >
-                        {step === questions.length - 1 ? 'Ver Resultado' : 'Próximo'}
+                        {step === questions.length - 1 ? t('viewResults') : t('next')}
                     </Button>
                 </div>
             </main>

@@ -2,56 +2,43 @@
 
 import { Check, Star, Zap, Shield } from 'lucide-react';
 import Button from '@/components/ui/Button';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/lib/navigation';
+import { useTranslations } from 'next-intl';
 
-const plans = [
-    {
-        name: 'Básico',
-        price: 'Grátis',
-        description: 'Para quem quer experimentar.',
-        features: [
-            '3 simulações por dia',
-            'Estilos básicos',
-            'Qualidade padrão',
-            'Com anúncios',
-        ],
-        cta: 'Começar Grátis',
-        popular: false,
-    },
-    {
-        name: 'Pro',
-        price: 'R$ 29,90',
-        period: '/mês',
-        description: 'Para quem quer o visual perfeito.',
-        features: [
-            'Simulações ilimitadas',
-            'Todos os estilos desbloqueados',
-            'Alta definição (HD)',
-            'Sem anúncios',
-            'Suporte prioritário',
-        ],
-        cta: 'Assinar Pro',
-        popular: true,
-    },
-    {
-        name: 'Barbearia',
-        price: 'R$ 99,90',
-        period: '/mês',
-        description: 'Para profissionais e negócios.',
-        features: [
-            'Tudo do plano Pro',
-            'Licença comercial',
-            'Múltiplos perfis',
-            'API de integração',
-            'Gerente de conta dedicado',
-        ],
-        cta: 'Falar com Vendas',
-        popular: false,
-    },
-];
+
 
 export default function PricingPage() {
     const router = useRouter();
+    const t = useTranslations('pricingPage');
+
+    const plans = [
+        {
+            name: t('basic'),
+            price: t('basicPrice'),
+            description: t('basicDesc'),
+            features: [t('basicFeature1'), t('basicFeature2'), t('basicFeature3'), t('basicFeature4')],
+            cta: t('basicCta'),
+            popular: false,
+        },
+        {
+            name: t('pro'),
+            price: t('proPrice'),
+            period: t('proPeriod'),
+            description: t('proDesc'),
+            features: [t('proFeature1'), t('proFeature2'), t('proFeature3'), t('proFeature4'), t('proFeature5')],
+            cta: t('proCta'),
+            popular: true,
+        },
+        {
+            name: t('barber'),
+            price: t('barberPrice'),
+            period: t('barberPeriod'),
+            description: t('barberDesc'),
+            features: [t('barberFeature1'), t('barberFeature2'), t('barberFeature3'), t('barberFeature4'), t('barberFeature5')],
+            cta: t('barberCta'),
+            popular: false,
+        },
+    ];
 
     return (
         <div className="min-h-screen bg-dark text-white">
@@ -59,10 +46,10 @@ export default function PricingPage() {
             <header className="py-12 md:py-20 px-6 text-center space-y-6 relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-b from-primary/10 to-transparent pointer-events-none" />
                 <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold tracking-tight">
-                    Invista no seu <span className="text-primary">Melhor Visual</span>
+                    {t('mainTitle')} <span className="text-primary">{t('mainTitleHighlight')}</span>
                 </h1>
                 <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto">
-                    Escolha o plano ideal para suas necessidades e desbloqueie todo o potencial da nossa IA.
+                    {t('subtitle')}
                 </p>
             </header>
 
@@ -82,7 +69,7 @@ export default function PricingPage() {
                         >
                             {plan.popular && (
                                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-dark font-bold px-4 py-1 rounded-full text-sm">
-                                    Mais Popular
+                                    {t('mostPopular')}
                                 </div>
                             )}
 
@@ -123,27 +110,27 @@ export default function PricingPage() {
                         <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto text-primary">
                             <Zap className="w-8 h-8" />
                         </div>
-                        <h3 className="text-xl font-bold">Processamento Rápido</h3>
+                        <h3 className="text-xl font-bold">{t('fastProcessing')}</h3>
                         <p className="text-slate-400">
-                            Resultados em segundos usando nossa infraestrutura de GPU de última geração.
+                            {t('fastProcessingDesc')}
                         </p>
                     </div>
                     <div className="text-center space-y-4">
                         <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto text-primary">
                             <Star className="w-8 h-8" />
                         </div>
-                        <h3 className="text-xl font-bold">Qualidade Fotorealista</h3>
+                        <h3 className="text-xl font-bold">{t('photorealistic')}</h3>
                         <p className="text-slate-400">
-                            Algoritmos treinados com milhões de imagens para garantir o máximo de realismo.
+                            {t('photorealisticDesc')}
                         </p>
                     </div>
                     <div className="text-center space-y-4">
                         <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto text-primary">
                             <Shield className="w-8 h-8" />
                         </div>
-                        <h3 className="text-xl font-bold">Privacidade Total</h3>
+                        <h3 className="text-xl font-bold">{t('totalPrivacy')}</h3>
                         <p className="text-slate-400">
-                            Suas fotos são processadas e deletadas automaticamente. Seus dados são seus.
+                            {t('totalPrivacyDesc')}
                         </p>
                     </div>
                 </div>

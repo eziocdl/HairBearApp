@@ -1,10 +1,13 @@
+const withNextIntl = require('next-intl/plugin')('./i18n-request.ts');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   /* config options here */
   reactStrictMode: true,
 
   // ⚠️ CAPACITOR/MOBILE: Static export required
-  output: 'export',
+  // Temporarily disabled for dev mode testing - re-enable for production build
+  // output: 'export',
   trailingSlash: true,
 
   // Permitir Node 18 (temporário - recomenda-se atualizar para Node 20+)
@@ -43,4 +46,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withNextIntl(nextConfig);

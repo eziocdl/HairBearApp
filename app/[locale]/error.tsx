@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import Button from '@/components/ui/Button';
 
 export default function Error({
@@ -10,6 +11,7 @@ export default function Error({
     error: Error & { digest?: string };
     reset: () => void;
 }) {
+    const t = useTranslations('error');
     useEffect(() => {
         // Log the error to an error reporting service (e.g., Sentry)
         console.error('Error caught by Error Boundary:', error);
@@ -21,10 +23,10 @@ export default function Error({
                 <div className="space-y-2">
                     <h1 className="text-6xl">😬</h1>
                     <h2 className="text-2xl font-bold text-slate-100">
-                        Ops! Algo deu errado
+                        {t('title')}
                     </h2>
                     <p className="text-slate-400">
-                        Não se preocupe, seus dados estão seguros. Tente novamente ou volte para a página inicial.
+                        {t('description')}
                     </p>
                 </div>
 
@@ -41,18 +43,18 @@ export default function Error({
                         variant="primary"
                         onClick={reset}
                     >
-                        Tentar Novamente
+                        {t('tryAgainButton')}
                     </Button>
                     <Button
                         variant="secondary"
                         onClick={() => window.location.href = '/'}
                     >
-                        Voltar ao Início
+                        {t('backButton')}
                     </Button>
                 </div>
 
                 <p className="text-xs text-slate-500">
-                    Se o problema persistir, entre em contato conosco.
+                    {t('contactSupport')}
                 </p>
             </div>
         </div>

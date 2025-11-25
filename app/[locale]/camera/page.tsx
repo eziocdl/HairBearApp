@@ -3,27 +3,30 @@
 import { motion } from 'framer-motion';
 import { Camera, X, CheckCircle, AlertCircle } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/lib/navigation';
+import { useTranslations } from 'next-intl';
 import Button from '@/components/ui/Button';
 import { useAppStore } from '@/lib/store';
 import { toast } from 'sonner';
 
 export default function CameraPage() {
     const router = useRouter();
+    const t = useTranslations('cameraPage');
     const videoRef = useRef<HTMLVideoElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [stream, setStream] = useState<MediaStream | null>(null);
     const [faceDetected, setFaceDetected] = useState(false);
-    const [feedback, setFeedback] = useState('Posicione seu rosto no círculo');
+    const [feedback, setFeedback] = useState('');
     const [capturing, setCapturing] = useState(false);
     const { setBasePhoto, setCurrentStage } = useAppStore();
 
     useEffect(() => {
+        setFeedback(t('positionFace'));
         startCamera();
         return () => {
             stopCamera();
         };
-    }, []);
+    }, [t]);
 
     const startCamera = async () => {
         try {
@@ -43,12 +46,12 @@ export default function CameraPage() {
             // Simular detecção de rosto após 2 segundos
             setTimeout(() => {
                 setFaceDetected(true);
-                setFeedback('Perfeito! Mantenha a posição');
+                setFeedback(t('perfect'));
             }, 2000);
 
         } catch (error) {
             console.error('Erro ao acessar câmera:', error);
-            toast.error('Não foi possível acessar a câmera. Por favor, permita o acesso.');
+            toast.error(t('errorCamera'));
         }
     };
 
@@ -78,7 +81,7 @@ export default function CameraPage() {
                 setBasePhoto(blob);
                 stopCamera();
                 setCurrentStage('analysis');
-                toast.success('Foto capturada com sucesso!');
+                toast.success(t('photoSuccess'));
                 router.push('/analysis');
             }
         }, 'image/jpeg', 0.9);
@@ -93,7 +96,7 @@ export default function CameraPage() {
         <div className="min-h-screen flex flex-col bg-black">
             {/* Header */}
             <header className="p-4 flex items-center justify-between bg-dark/80 backdrop-blur-lg">
-                <h1 className="text-lg font-semibold text-white">Capturar Foto</h1>
+                <h1 className="text-lg font-semibold text-white">{t('title')}</h1>
                 <button
                     onClick={handleCancel}
                     className="p-2 hover:bg-white/10 rounded-lg transition-colors"
@@ -173,11 +176,11 @@ export default function CameraPage() {
                         disabled={!faceDetected || capturing}
                         loading={capturing}
                     >
-                        {capturing ? 'CAPTURANDO...' : 'CAPTURAR FOTO'}
+                        {capturing ? t('capturing') : t('capturePhoto')}
                     </Button>
 
                     <p className="text-center text-sm text-slate-400">
-                        Dica: Posicione seu rosto de frente com boa iluminação
+                        {t('tip')}
                     </p>
                 </div>
             </div>
