@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from '@/lib/navigation';
 import { useTranslations } from 'next-intl';
-import { ChevronRight, ChevronLeft, Check, User, Scissors, Sparkles } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Check } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import { useAppStore } from '@/lib/store';
 

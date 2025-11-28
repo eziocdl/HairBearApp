@@ -1,14 +1,12 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Heart, Share2, Download, RotateCcw, Check } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Heart, Share2, Download, RotateCcw } from 'lucide-react';
 import { useState } from 'react';
 import { useRouter } from '@/lib/navigation';
 import { useTranslations } from 'next-intl';
 import Button from '@/components/ui/Button';
-import Card from '@/components/ui/Card';
 import { useAppStore } from '@/lib/store';
-import { toast } from 'sonner';
 
 export default function ResultsPage() {
     const router = useRouter();

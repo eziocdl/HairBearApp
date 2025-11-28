@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Camera, Upload, X, CheckCircle, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Camera, Upload, X, CheckCircle, ChevronLeft } from 'lucide-react';
 import { useState, useRef } from 'react';
 import { useRouter } from '@/lib/navigation';
 import { useTranslations } from 'next-intl';

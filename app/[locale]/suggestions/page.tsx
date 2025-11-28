@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Star, TrendingUp, X, Scissors, User, Loader2 } from 'lucide-react';
+import { Star, X, Scissors, User } from 'lucide-react';
 import { useState } from 'react';
 import { useRouter } from '@/lib/navigation';
 import { useTranslations } from 'next-intl';
@@ -17,7 +17,7 @@ export default function SuggestionsPage() {
     const t = useTranslations('suggestionsPage');
     const [selectedStyleId, setSelectedStyleId] = useState<string | null>(null);
     const [showModal, setShowModal] = useState(false);
-    const [selectedChoice, setSelectedChoice] = useState<'haircut' | 'haircut_beard' | 'beard'>('haircut_beard');
+    const [selectedChoice] = useState<'haircut' | 'haircut_beard' | 'beard'>('haircut_beard');
     const { setSelectedStyle, setSelectedChoice: setStoreChoice, setCurrentStage } = useAppStore();
 
     // Fetch Haircuts

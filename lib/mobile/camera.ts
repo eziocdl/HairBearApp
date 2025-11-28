@@ -3,19 +3,6 @@
  * Abstração que funciona tanto em Web quanto em Mobile (Capacitor)
  */
 
-// Tipos para Capacitor (serão instalados depois)
-type CameraPhoto = {
-    webPath?: string;
-    base64String?: string;
-    format: string;
-};
-
-type CameraOptions = {
-    quality?: number;
-    allowEditing?: boolean;
-    resultType?: 'Uri' | 'Base64' | 'DataUrl';
-    source?: 'Camera' | 'Photos' | 'Prompt';
-};
 
 /**
  * Verifica se está rodando em plataforma nativa (Capacitor)
@@ -24,6 +11,7 @@ export function isNativePlatform(): boolean {
     if (typeof window === 'undefined') return false;
 
     // Capacitor adiciona essa propriedade global
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return !!(window as any).Capacitor;
 }
 

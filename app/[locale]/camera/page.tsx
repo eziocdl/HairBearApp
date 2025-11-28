@@ -20,14 +20,6 @@ export default function CameraPage() {
     const [capturing, setCapturing] = useState(false);
     const { setBasePhoto, setCurrentStage } = useAppStore();
 
-    useEffect(() => {
-        setFeedback(t('positionFace'));
-        startCamera();
-        return () => {
-            stopCamera();
-        };
-    }, [t]);
-
     const startCamera = async () => {
         try {
             const mediaStream = await navigator.mediaDevices.getUserMedia({
@@ -60,6 +52,17 @@ export default function CameraPage() {
             stream.getTracks().forEach(track => track.stop());
         }
     };
+
+
+    useEffect(() => {
+        setFeedback(t('positionFace'));
+        startCamera();
+        return () => {
+            stopCamera();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
 
     const capturePhoto = async () => {
         if (!videoRef.current || !canvasRef.current) return;

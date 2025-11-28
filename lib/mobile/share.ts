@@ -33,7 +33,7 @@ export async function share(options: ShareOptions): Promise<boolean> {
         } else {
             // Web: Usar Web Share API (se disponível)
             if (navigator.share) {
-                const shareData: any = {
+                const shareData: ShareData = {
                     title: options.title,
                     text: options.text,
                     url: options.url,
@@ -58,9 +58,9 @@ export async function share(options: ShareOptions): Promise<boolean> {
                 return false;
             }
         }
-    } catch (error: any) {
+    } catch (error: unknown) {
         // Usuário cancelou compartilhamento
-        if (error.name === 'AbortError') {
+        if (error instanceof Error && error.name === 'AbortError') {
             console.log('Compartilhamento cancelado');
             return false;
         }

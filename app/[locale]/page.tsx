@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import { Camera, Image as ImageIcon, ChevronRight, Star, ShieldCheck, Sparkles } from 'lucide-react';
-import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from '@/lib/navigation';
 import Button from '@/components/ui/Button';
@@ -15,7 +14,6 @@ export default function Home() {
     const common = useTranslations('common');
     const styles = useTranslations('styles');
     const { setCurrentStage, setSelectedStyle } = useAppStore();
-    const [sliderPosition, setSliderPosition] = useState(50);
 
     const handleCameraClick = () => {
         setCurrentStage('camera');
