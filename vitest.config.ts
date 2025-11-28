@@ -7,6 +7,9 @@ export default defineConfig({
         globals: true,
         setupFiles: './vitest.setup.ts',
         css: true,
+        coverage: {
+            provider: 'v8',
+        },
     },
     resolve: {
         alias: {
