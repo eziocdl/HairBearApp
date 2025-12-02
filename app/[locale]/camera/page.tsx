@@ -96,7 +96,7 @@ export default function CameraPage() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col bg-black">
+        <div className="min-h-screen flex flex-col bg-black" suppressHydrationWarning>
             {/* Header */}
             <header className="p-4 flex items-center justify-between bg-dark/80 backdrop-blur-lg">
                 <h1 className="text-lg font-semibold text-white">{t('title')}</h1>
@@ -109,7 +109,7 @@ export default function CameraPage() {
             </header>
 
             {/* Camera View */}
-            <main className="flex-1 relative flex items-center justify-center">
+            <main className="flex-1 relative flex items-center justify-center overflow-hidden">
                 <video
                     ref={videoRef}
                     autoPlay
@@ -119,7 +119,7 @@ export default function CameraPage() {
                 />
 
                 {/* Face Detection Overlay */}
-                <div className="absolute inset-0 flex items-center justify-center">
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <motion.div
                         initial={{ scale: 0.8, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
@@ -148,7 +148,7 @@ export default function CameraPage() {
                 </div>
 
                 {/* Feedback */}
-                <div className="absolute top-8 left-0 right-0 flex justify-center">
+                <div className="absolute top-8 left-0 right-0 flex justify-center pointer-events-none">
                     <motion.div
                         initial={{ y: -20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}

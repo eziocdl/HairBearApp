@@ -284,5 +284,32 @@
         "photorealisticDesc": "Algorithms trained with millions of images to ensure maximum realism.",
         "totalPrivacy": "Total Privacy",
         "totalPrivacyDesc": "Your photos are processed and deleted automatically. Your data is yours."
+    },
+    "TryOn": {
+        "welcome": "Hello! Welcome to the Ultra-Realistic style assistant. Please take a photo now or choose an image from gallery to get started.",
+        "photoReceived": "Perfect, photo received!",
+        "analyzing": "Perfect, photo received! Analyzing your face to suggest the best styles...",
+        "basedonAnalysis": "Based on your face analysis, here are the suggestions:",
+        "haircuts": "**Haircuts:**",
+        "beards": "**Beards:**",
+        "whichOption": "Which option do you want to test?",
+        "optionHaircut": "Haircut",
+        "optionBoth": "Haircut + Beard",
+        "optionBeard": "Beard",
+        "whichStyle": "Great! Which {style} style do you want to test? Choose below or type a custom style.",
+        "generating": "Generating 5 ultra-realistic variations of \"{style}\"... This may take a few seconds.",
+        "hereAreVariations": "Here are your variations:",
+        "testAnotherQuestion": "Do you want to test another style?",
+        "testAnother": "Yes",
+        "sendOtherPhoto": "Send another photo",
+        "finish": "Finish",
+        "takePhoto": "📷 Take Photo",
+        "gallery": "🖼️ Gallery",
+        "addReference": "📎 Add reference photo (optional)",
+        "referenceAdded": "✓ Added",
+        "errorAnalyzing": "Error analyzing photo. Please try again with another image.",
+        "errorGenerating": "Sorry, an error occurred while generating the images. Try again or choose another style.",
+        "downloadImage": "Download",
+        "fullscreen": "Fullscreen"
     }
 }

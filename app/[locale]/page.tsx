@@ -52,6 +52,13 @@ export default function Home() {
                     </div>
                     <div className="flex items-center gap-3">
                         <LocaleSwitcher />
+                        <button
+                            onClick={() => router.push('/tryon')}
+                            className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-bold hover:opacity-90 transition-opacity"
+                        >
+                            <Sparkles className="w-4 h-4" />
+                            Ultra Try-On
+                        </button>
                         <button className="text-sm text-slate-300 font-medium hover:text-white transition-colors">
                             {common('login')}
                         </button>

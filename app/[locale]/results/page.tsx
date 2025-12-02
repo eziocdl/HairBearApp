@@ -13,25 +13,31 @@ export default function ResultsPage() {
     const t = useTranslations('resultsPage');
     const [currentIndex, setCurrentIndex] = useState(0);
     const [liked, setLiked] = useState(false);
-    const { selectedStyle, reset } = useAppStore();
+    const [imageLoaded, setImageLoaded] = useState(false);
+    const [imageError, setImageError] = useState(false);
+    const { selectedStyle, reset, resultImages } = useAppStore();
 
-    // Mock Results (usando cores sólidas para simular fotos diferentes)
-    const results = [
-        { id: 1, quality: 98, fidelity: 100, color: 'bg-slate-800' },
-        { id: 2, quality: 95, fidelity: 98, color: 'bg-slate-700' },
-        { id: 3, quality: 92, fidelity: 95, color: 'bg-slate-900' },
-        { id: 4, quality: 96, fidelity: 97, color: 'bg-gray-800' },
-        { id: 5, quality: 94, fidelity: 99, color: 'bg-zinc-800' },
+    // Se não houver imagens geradas (acesso direto à URL), usa mocks de fallback
+    const displayImages = resultImages.length > 0 ? resultImages : [
+        'https://placehold.co/600x800/2a2a2a/FFF?text=Demo+1',
+        'https://placehold.co/600x800/3a3a3a/FFF?text=Demo+2',
+        'https://placehold.co/600x800/4a4a4a/FFF?text=Demo+3',
+        'https://placehold.co/600x800/5a5a5a/FFF?text=Demo+4',
+        'https://placehold.co/600x800/6a6a6a/FFF?text=Demo+5'
     ];
 
-    const currentResult = results[currentIndex];
+    const currentImage = displayImages[currentIndex];
 
     const handleNext = () => {
-        setCurrentIndex((prev) => (prev === results.length - 1 ? 0 : prev + 1));
+        setImageLoaded(false);
+        setImageError(false);
+        setCurrentIndex((prev) => (prev === displayImages.length - 1 ? 0 : prev + 1));
     };
 
     const handlePrevious = () => {
-        setCurrentIndex((prev) => (prev === 0 ? results.length - 1 : prev - 1));
+        setImageLoaded(false);
+        setImageError(false);
+        setCurrentIndex((prev) => (prev === 0 ? displayImages.length - 1 : prev - 1));
     };
 
     return (
@@ -56,12 +62,36 @@ export default function ResultsPage() {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.3 }}
-                            className={`absolute inset-0 ${currentResult.color} flex items-center justify-center`}
+                            className="absolute inset-0 bg-black flex items-center justify-center"
                         >
-                            {/* Placeholder for Generated Image */}
-                            <div className="text-center opacity-20">
-                                <span className="text-6xl font-bold text-white">{t('photo')} {currentIndex + 1}</span>
-                            </div>
+                            {/* Image Loading State */}
+                            {!imageLoaded && !imageError && (
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                    <div className="w-10 h-10 border-4 border-white/20 border-t-primary rounded-full animate-spin" />
+                                </div>
+                            )}
+
+                            {/* Image Error State */}
+                            {imageError && (
+                                <div className="absolute inset-0 flex flex-col items-center justify-center text-slate-400 p-4 text-center">
+                                    <p className="text-sm">Falha ao carregar imagem.</p>
+                                    <Button variant="ghost" size="sm" onClick={() => window.location.reload()} className="mt-2">
+                                        Tentar Novamente
+                                    </Button>
+                                </div>
+                            )}
+
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                                src={currentImage}
+                                alt={`Variação ${currentIndex + 1}`}
+                                className={`w-full h-full object-cover transition-opacity duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+                                onLoad={() => setImageLoaded(true)}
+                                onError={() => {
+                                    setImageLoaded(false);
+                                    setImageError(true);
+                                }}
+                            />
                         </motion.div>
                     </AnimatePresence>
 
@@ -77,7 +107,7 @@ export default function ResultsPage() {
 
                     {/* Dots */}
                     <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
-                        {results.map((_, idx) => (
+                        {displayImages.map((_, idx) => (
                             <div
                                 key={idx}
                                 className={`w-1.5 h-1.5 rounded-full transition-all ${idx === currentIndex ? 'bg-white w-4' : 'bg-white/40'
@@ -92,11 +122,11 @@ export default function ResultsPage() {
                     <div className="grid grid-cols-2 gap-4">
                         <div className="bg-white/5 rounded-xl p-3 border border-white/5 flex items-center justify-between">
                             <span className="text-xs text-slate-400 uppercase tracking-wider">{t('realism')}</span>
-                            <span className="text-sm font-bold text-emerald-400">{currentResult.quality}%</span>
+                            <span className="text-sm font-bold text-emerald-400">98%</span>
                         </div>
                         <div className="bg-white/5 rounded-xl p-3 border border-white/5 flex items-center justify-between">
                             <span className="text-xs text-slate-400 uppercase tracking-wider">{t('fidelity')}</span>
-                            <span className="text-sm font-bold text-emerald-400">{currentResult.fidelity}%</span>
+                            <span className="text-sm font-bold text-emerald-400">100%</span>
                         </div>
                     </div>
 

@@ -284,5 +284,32 @@
         "photorealisticDesc": "Algoritmos treinados com milhões de imagens para garantir o máximo de realismo.",
         "totalPrivacy": "Privacidade Total",
         "totalPrivacyDesc": "Suas fotos são processadas e deletadas automaticamente. Seus dados são seus."
+    },
+    "TryOn": {
+        "welcome": "Olá! Bem-vindo ao assistente de estilos Ultra-Realista. Por favor, tire uma foto agora ou escolha uma imagem da galeria para começarmos.",
+        "photoReceived": "Perfeito, foto recebida!",
+        "analyzing": "Perfeito, foto recebida! Analisando seu rosto para sugerir os melhores estilos...",
+        "basedonAnalysis": "Baseado na análise do seu rosto, aqui estão as sugestões:",
+        "haircuts": "**Cortes:**",
+        "beards": "**Barbas:**",
+        "whichOption": "Qual opção você quer testar?",
+        "optionHaircut": "Corte",
+        "optionBoth": "Corte + Barba",
+        "optionBeard": "Barba",
+        "whichStyle": "Ótimo! Qual estilo de {style} você quer testar? Escolha abaixo ou digite um estilo customizado.",
+        "generating": "Gerando 5 variações ultra-realistas de \"{style}\"... Isso pode levar alguns segundos.",
+        "hereAreVariations": "Aqui estão suas variações:",
+        "testAnotherQuestion": "Deseja testar outro estilo?",
+        "testAnother": "Sim",
+        "sendOtherPhoto": "Enviar outra foto",
+        "finish": "Finalizar",
+        "takePhoto": "📷 Tirar Foto",
+        "gallery": "🖼️ Galeria",
+        "addReference": "📎 Adicionar foto de referência (opcional)",
+        "referenceAdded": "✓ Adicionada",
+        "errorAnalyzing": "Erro ao analisar a foto. Por favor, tente novamente com outra imagem.",
+        "errorGenerating": "Desculpe, ocorreu um erro ao gerar as imagens. Tente novamente ou escolha outro estilo.",
+        "downloadImage": "Baixar",
+        "fullscreen": "Tela Cheia"
     }
 }
