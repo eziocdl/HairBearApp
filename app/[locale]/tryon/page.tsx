@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import {
     TryOnState,
@@ -140,7 +140,7 @@ export default function UltraTryonPage() {
     };
 
     const selectStyle = async (styleName: string, type: 'haircut' | 'beard') => {
-        let optionType = currentState.selectedOption?.type || type as any;
+        const optionType = currentState.selectedOption?.type || type;
 
         // If user clicked a suggestion directly without selecting option first, infer option
         if (!currentState.selectedOption) {

@@ -3,6 +3,8 @@ export interface StyleSuggestions {
     beards: string[];        // 5 sugestões de barbas
 }
 
+export type AnalysisChoice = 'haircut' | 'beard' | 'haircut_beard';
+
 export interface TryOnOption {
     type: 'haircut' | 'haircut_beard' | 'beard';
     code: 1 | 2 | 3;

@@ -46,8 +46,8 @@ Sua missão é aplicar SOMENTE cortes de cabelo e estilos de barba diretamente n
 HARDLOCK — EDIÇÃO LOCAL ULTRA REALISTA (SEM GERAR ROSTO NOVO)
 `;
             }
-        } catch (e) {
-            console.warn('⚠️ Falha ao ler system instructions, usando fallback.');
+        } catch (error) {
+            console.warn('⚠️ Falha ao ler system instructions, usando fallback.', error);
             systemInstruction = `
 You are an Ultra-Photorealistic Hair & Beard Try-On AI Agent.
 Sua missão é aplicar SOMENTE cortes de cabelo e estilos de barba diretamente na foto real enviada pelo usuário.
@@ -115,57 +115,57 @@ HARDLOCK — EDIÇÃO LOCAL ULTRA REALISTA (SEM GERAR ROSTO NOVO)
             });
         }
 
-        // Chamada usando a estrutura do novo SDK
-        const response = await genAI.models.generateContent({
-            model: 'gemini-2.5-flash-image',
-            contents: contents,
-            config: {
-                systemInstruction: systemInstruction,
+        const variationPromises = Array.from({ length: 5 }, async (_, idx: number) => {
+            try {
+                const resp = await genAI.models.generateContent({
+                    model: 'gemini-2.5-flash-image',
+                    contents: contents,
+                    config: {
+                        systemInstruction: systemInstruction,
+                    },
+                });
+                const cand = resp.candidates?.[0];
+                const part = cand?.content?.parts?.[0];
+                if (part?.inlineData?.data) {
+                    const imageData = part.inlineData.data;
+                    const base64Image = `data:image/png;base64,${imageData}`;
+                    console.log(`✅ Variation ${idx + 1} generated successfully`);
+                    return base64Image;
+                }
+                console.warn(`⚠️ Variation ${idx + 1} missing image data`);
+                return null;
+            } catch (e: unknown) {
+                console.error(`❌ Error generating variation ${idx + 1}:`, e);
+                return null;
             }
         });
 
-        // Extrair dados da imagem da resposta
-        const candidate = response.candidates?.[0];
-        const part = candidate?.content?.parts?.[0];
+        const variations = (await Promise.all(variationPromises)).filter(
+            (image): image is string => image !== null
+        );
 
-        if (part?.inlineData?.data) {
-            const imageData = part.inlineData.data;
-            const base64Image = `data:image/png;base64,${imageData}`;
-
-            console.log('✅ Imagem gerada com sucesso!');
-
-            // Retorna array com 1 imagem (o frontend fará múltiplas chamadas se precisar de variações)
+        if (variations.length > 0) {
+            console.log(`✅ ${variations.length} imagens geradas com sucesso!`);
             return NextResponse.json({
                 success: true,
-                variations: [base64Image],
-                message: 'Imagem gerada com Gemini 2.5 Flash Image'
+                variations: variations,
+                message: 'Imagens geradas com Gemini 2.5 Flash Image'
             });
         }
 
-        console.error('⚠️ Resposta inesperada (sem imagem):', JSON.stringify(response, null, 2));
-
-        // Tentar extrair texto se houver erro ou recusa
-        const textPart = candidate?.content?.parts?.find((p: any) => p.text);
-        if (textPart) {
-            return NextResponse.json(
-                { error: 'O modelo retornou texto em vez de imagem: ' + textPart.text },
-                { status: 500 }
-            );
-        }
+        console.error('⚠️ Nenhuma imagem válida foi retornada pelo Gemini.');
 
         return NextResponse.json(
-            { error: 'O Gemini não retornou uma imagem válida.' },
+            { error: 'O Gemini não retornou nenhuma imagem válida.' },
             { status: 500 }
         );
 
-    } catch (error) {
-        console.error('💥 ERRO GERAL:', error);
+    } catch (error: unknown) {
+        console.error('❌ Erro geral na API:', error);
         return NextResponse.json(
-            {
-                error: 'Falha no processamento',
-                details: error instanceof Error ? error.message : 'Erro desconhecido'
-            },
+            { error: 'Erro interno no servidor', details: error instanceof Error ? error.message : String(error) },
             { status: 500 }
         );
     }
 }
+

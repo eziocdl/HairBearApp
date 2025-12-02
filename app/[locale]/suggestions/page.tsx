@@ -5,6 +5,7 @@ import { Star, X, Scissors, User } from 'lucide-react';
 import { useState } from 'react';
 import { useRouter } from '@/lib/navigation';
 import { useTranslations } from 'next-intl';
+import { AnalysisChoice } from '@/types/tryon';
 import { useQuery } from '@tanstack/react-query';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
@@ -216,7 +217,7 @@ export default function SuggestionsPage() {
                                 ].map((option) => (
                                     <label
                                         key={option.id}
-                                        onClick={() => setSelectedChoice(option.id as any)}
+                                        onClick={() => setSelectedChoice(option.id as AnalysisChoice)}
                                         className={`flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-all ${selectedChoice === option.id
                                             ? 'bg-primary/10 border-primary'
                                             : 'bg-white/5 border-transparent hover:bg-white/10'
